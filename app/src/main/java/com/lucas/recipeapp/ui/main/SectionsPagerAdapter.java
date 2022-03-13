@@ -34,17 +34,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         switch (position){
             case 0:
-                fragment = new tab1();
-                break;
+                return new tab1();
             case 1:
-                fragment = new tab2();
-                break;
+                return new tab2();
             case 2:
-                fragment = new tab3();
-                break;
-
-
-
+                return new tab3();
         }
         return PlaceholderFragment.newInstance(position + 1);
     }
