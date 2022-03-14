@@ -35,7 +35,24 @@ public class IngredientTab extends Fragment {
         manager = new ApiRequestManager(getActivity());
         manager.getRandomRecipes(randomRecipeListener);
 
+        setupSearchView();
+
         return view;
+    }
+
+    private void setupSearchView() {
+        keywordSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                manager.getRandomRecipes(randomRecipeListener);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
     }
 
     private final RandomRecipeListener randomRecipeListener = new RandomRecipeListener() {
