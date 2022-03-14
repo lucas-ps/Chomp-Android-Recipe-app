@@ -9,9 +9,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.lucas.recipeapp.R;
-import com.lucas.recipeapp.tab1;
-import com.lucas.recipeapp.tab2;
-import com.lucas.recipeapp.tab3;
+import com.lucas.recipeapp.KeywordTab;
+import com.lucas.recipeapp.IngredientTab;
+import com.lucas.recipeapp.HistoryTab;
 
 
 /**
@@ -34,11 +34,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         switch (position){
             case 0:
-                return new tab1();
+                return new KeywordTab();
             case 1:
-                return new tab2();
+                return new IngredientTab();
             case 2:
-                return new tab3();
+                return new HistoryTab();
         }
         return PlaceholderFragment.newInstance(position + 1);
     }
