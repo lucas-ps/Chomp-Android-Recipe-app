@@ -47,12 +47,8 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = binding.fab;
 
         // Code for initialising recycler view
-        dialog = new ProgressDialog(this);
-        dialog.setTitle("Loading...");
-
         manager = new ApiRequestManager(this);
         manager.getRandomRecipes(randomRecipeListener);
-        dialog.show();
 
         keywordSearchView = (SearchView) findViewById(R.id.keywordsSearchView);
         keywordRecyclerView = (RecyclerView) findViewById(R.id.keywordsRecyclerView);
