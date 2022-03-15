@@ -4,5 +4,5 @@ import java.util.ArrayList;
 
 public class AnalyzedInstruction {
     public String name;
-    public ArrayList<RecipeModels> steps;
+    public ArrayList<Step> steps;
 }

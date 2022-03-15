@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.lucas.recipeapp.adapters.RandomRecipeAdapter;
+import com.lucas.recipeapp.adapters.RecipeAdapter;
 import com.lucas.recipeapp.data.ApiRequestManager;
 import com.lucas.recipeapp.listeners.RandomRecipeListener;
 import com.lucas.recipeapp.models.RandomRecipeAPI;
@@ -21,7 +21,7 @@ import com.lucas.recipeapp.models.RandomRecipeAPI;
 public class HistoryTab extends Fragment {
 
     ApiRequestManager manager;
-    RandomRecipeAdapter randomRecipeAdapter;
+    RecipeAdapter recipeAdapter;
     SearchView keywordSearchView;
     RecyclerView keywordRecyclerView;
 
@@ -44,8 +44,8 @@ public class HistoryTab extends Fragment {
             keywordRecyclerView = getView().findViewById(R.id.keywordsRecyclerView);
             keywordRecyclerView.setHasFixedSize(true);
             keywordRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
-            randomRecipeAdapter = new RandomRecipeAdapter(getActivity(), response.recipes);
-            keywordRecyclerView.setAdapter(randomRecipeAdapter);
+            recipeAdapter = new RecipeAdapter(getActivity(), response.recipes);
+            keywordRecyclerView.setAdapter(recipeAdapter);
         }
 
         @Override
