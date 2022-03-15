@@ -18,12 +18,12 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RandomRecipeAdapter extends RecyclerView.Adapter<RandomRecipeViewHolder>{
+public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder>{
 
     Context context;
     List<Recipe> recipeList;
 
-    public RandomRecipeAdapter(Context context, ArrayList<Recipe> recipes) {
+    public RecipeAdapter(Context context, ArrayList<Recipe> recipes) {
         this.context = context;
         this.recipeList = recipes;
     }
@@ -31,14 +31,14 @@ public class RandomRecipeAdapter extends RecyclerView.Adapter<RandomRecipeViewHo
     // Create viewholder on create
     @NonNull
     @Override
-    public RandomRecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new RandomRecipeViewHolder(LayoutInflater.from(context)
+    public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new RecipeViewHolder(LayoutInflater.from(context)
                 .inflate(R.layout.list_recipe, parent, false));
     }
 
     // Set values on bind
     @Override
-    public void onBindViewHolder(@NonNull RandomRecipeViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
         holder.textView_title.setText(recipeList.get(position).title);
         holder.textView_title.setSelected(true);
         holder.textView_servings.setText(recipeList.get(position).servings + " people");
@@ -53,14 +53,14 @@ public class RandomRecipeAdapter extends RecyclerView.Adapter<RandomRecipeViewHo
     }
 }
 
-class RandomRecipeViewHolder extends RecyclerView.ViewHolder {
+class RecipeViewHolder extends RecyclerView.ViewHolder {
     CardView recipe_list_container;
     TextView textView_title;
     ImageView imageView_recipe;
     TextView textView_servings;
     TextView textView_time;
 
-    public RandomRecipeViewHolder(@NonNull View itemView) {
+    public RecipeViewHolder(@NonNull View itemView) {
         super(itemView);
         recipe_list_container = itemView.findViewById(R.id.recipe_list_container);
         textView_title = itemView.findViewById(R.id.textView_title);
