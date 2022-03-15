@@ -14,7 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
-import com.lucas.recipeapp.adapters.RandomRecipeAdapter;
+import com.lucas.recipeapp.adapters.RecipeAdapter;
 import com.lucas.recipeapp.data.ApiRequestManager;
 import com.lucas.recipeapp.databinding.ActivityMainBinding;
 import com.lucas.recipeapp.listeners.RandomRecipeListener;
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     ProgressDialog dialog;
     ApiRequestManager manager;
-    RandomRecipeAdapter randomRecipeAdapter;
+    RecipeAdapter recipeAdapter;
     SearchView keywordSearchView;
     RecyclerView keywordRecyclerView;
 
@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
             keywordRecyclerView = findViewById(R.id.keywordsRecyclerView);
             keywordRecyclerView.setHasFixedSize(true);
             keywordRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 1));
-            randomRecipeAdapter = new RandomRecipeAdapter(MainActivity.this, response.recipes);
-            keywordRecyclerView.setAdapter(randomRecipeAdapter);
+            recipeAdapter = new RecipeAdapter(MainActivity.this, response.recipes);
+            keywordRecyclerView.setAdapter(recipeAdapter);
         }
 
         @Override
