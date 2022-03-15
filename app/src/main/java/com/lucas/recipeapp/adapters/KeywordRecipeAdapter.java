@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KeywordRecipeAdapter extends RecyclerView.Adapter {
+public class KeywordRecipeAdapter extends RecyclerView.Adapter<KeywordRecipeViewHolder> {
     Context context;
     List<Result> recipeList;
 
@@ -34,16 +34,13 @@ public class KeywordRecipeAdapter extends RecyclerView.Adapter {
                 .inflate(R.layout.list_recipe, parent, false));
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
-    }
-
     // Set values on bind
+    @Override
     public void onBindViewHolder(@NonNull KeywordRecipeViewHolder holder, int position) {
         holder.textView_title.setText(recipeList.get(position).title);
         holder.textView_title.setSelected(true);
         holder.textView_servings.setText(recipeList.get(position).servings + " people");
+        System.out.println(recipeList.get(position).servings);
         holder.textView_time.setText(recipeList.get(position).readyInMinutes + " minutes");
         Picasso.get().load(recipeList.get(position).image).into(holder.imageView_recipe);
     }
