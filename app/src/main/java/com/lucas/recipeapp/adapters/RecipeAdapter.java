@@ -12,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucas.recipeapp.R;
+import com.lucas.recipeapp.listeners.ClickedOnRecipeListener;
 import com.lucas.recipeapp.models.Recipe;
 import com.squareup.picasso.Picasso;
 
@@ -22,10 +23,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder>{
 
     Context context;
     List<Recipe> recipeList;
+    ClickedOnRecipeListener listener;
 
-    public RecipeAdapter(Context context, ArrayList<Recipe> recipes) {
+    public RecipeAdapter(Context context, ArrayList<Recipe> recipes, ClickedOnRecipeListener listener) {
         this.context = context;
         this.recipeList = recipes;
+        this.listener = listener;
     }
 
     // Create viewholder on create
@@ -44,6 +47,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder>{
         holder.textView_servings.setText(recipeList.get(position).servings + " people");
         holder.textView_time.setText(recipeList.get(position).readyInMinutes + " minutes");
         Picasso.get().load(recipeList.get(position).image).into(holder.imageView_recipe);
+
+        holder.recipe_list_container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClickRecipe(String.valueOf(recipeList.get(holder.getAdapterPosition()).id));
+            }
+        });
     }
 
     // Return count of recipes
