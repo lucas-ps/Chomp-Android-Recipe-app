@@ -2,36 +2,35 @@ package com.lucas.recipeapp.data;
 
 import android.content.Context;
 
+import com.lucas.recipeapp.listeners.IngredientRecipeListener;
 import com.lucas.recipeapp.listeners.KeywordRecipeListener;
 import com.lucas.recipeapp.listeners.RandomRecipeListener;
+import com.lucas.recipeapp.listeners.RecipeInfoListener;
+import com.lucas.recipeapp.listeners.RecipeInstructionsListener;
+import com.lucas.recipeapp.models.GetRecipeInfoAPI;
+import com.lucas.recipeapp.models.GetRecipeInstructionsAPI;
+import com.lucas.recipeapp.models.IngredientRecipeAPI;
 import com.lucas.recipeapp.models.KeywordRecipeAPI;
 import com.lucas.recipeapp.models.RandomRecipeAPI;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.http.GET;
-import retrofit2.http.Query;
 
 public class ApiRequestManager {
     Context context;
     Retrofit retrofit = RetrofitClient.getRetrofitClient();
-
+    CallApiManager api = RetrofitClient.getApi();
 
     public ApiRequestManager(Context context) {
         this.context = context;
     }
 
-    private interface callRandomRecipes {
-        @GET("recipes/random")
-        Call<RandomRecipeAPI> callRandomRecipeAPI(
-                @Query("number") String number);
-    }
-
     public void getRandomRecipes(RandomRecipeListener listener) {
-        callRandomRecipes callRandom = retrofit.create(callRandomRecipes.class);
-        Call<RandomRecipeAPI> call = callRandom.callRandomRecipeAPI("10");
+        Call<RandomRecipeAPI> call = api.callRandomRecipeAPI("10");
         call.enqueue(new Callback<RandomRecipeAPI>() {
             @Override
             public void onResponse(Call<RandomRecipeAPI> call, Response<RandomRecipeAPI> response) {
@@ -50,17 +49,10 @@ public class ApiRequestManager {
         });
     }
 
-    private interface callKeywordRecipes {
-        @GET("recipes/complexSearch")
-        Call<KeywordRecipeAPI> callKeywordRecipeAPI(
-                @Query("query") String query,
-                @Query("addRecipeInformation") String information);
-    }
-
-    public void getKeywordRecipes(KeywordRecipeListener listener, String query) {
-        callKeywordRecipes callKeyword = retrofit.create(callKeywordRecipes.class);
-        Call<KeywordRecipeAPI> call = callKeyword.callKeywordRecipeAPI(query, "true");
+    public void getKeywordRecipes (KeywordRecipeListener listener, String query) {
+        Call<KeywordRecipeAPI> call = api.callKeywordRecipeAPI(query, "true");
         call.enqueue(new Callback<KeywordRecipeAPI>() {
+
             @Override
             public void onResponse(Call<KeywordRecipeAPI> call, Response<KeywordRecipeAPI> response) {
                 if (!response.isSuccessful()) {
@@ -77,4 +69,68 @@ public class ApiRequestManager {
             }
         });
     }
+
+    public void getIngredientRecipes(IngredientRecipeListener listener, String ingredients) {
+        Call<List<IngredientRecipeAPI>> call =
+                api.callIngredientRecipeAPI(ingredients, "10", "true");
+        call.enqueue(new Callback<List<IngredientRecipeAPI>>() {
+
+            @Override
+            public void onResponse(Call<List<IngredientRecipeAPI>> call, Response<List<IngredientRecipeAPI>> response) {
+                if (!response.isSuccessful()) {
+                    listener.errorMessage(response.message());
+                    System.out.println("Error while fetching recipes by ingredient");
+                    return;
+                }
+                listener.fetchedResponse(response.body(), response.message());
+            }
+
+            @Override
+            public void onFailure(Call<List<IngredientRecipeAPI>> call, Throwable t) {
+                listener.errorMessage(t.getMessage());
+            }
+        });
+    }
+
+    public void getRecipeInfo(RecipeInfoListener listener, int ID) {
+        Call<GetRecipeInfoAPI> call =
+                api.callRecipeInfoAPI(ID, "false");
+        call.enqueue(new Callback<GetRecipeInfoAPI>() {
+            @Override
+            public void onResponse(Call<GetRecipeInfoAPI> call, Response<GetRecipeInfoAPI> response) {
+                if (!response.isSuccessful()) {
+                    listener.errorMessage(response.message());
+                    System.out.println("Error while fetching recipe info for ID: "+ ID);
+                    return;
+                }
+                listener.fetchedResponse(response.body(), response.message());
+            }
+
+            @Override
+            public void onFailure(Call<GetRecipeInfoAPI> call, Throwable t) {
+                listener.errorMessage(t.getMessage());
+            }
+        });
+    }
+
+    public void getRecipeInstructions(RecipeInstructionsListener listener, int ID) {
+        Call<List<GetRecipeInstructionsAPI>> call = api.callRecipeInstructionsAPI(ID);
+        call.enqueue(new Callback<List<GetRecipeInstructionsAPI>>() {
+            @Override
+            public void onResponse(Call<List<GetRecipeInstructionsAPI>> call, Response<List<GetRecipeInstructionsAPI>> response) {
+                if (!response.isSuccessful()) {
+                    listener.errorMessage(response.message());
+                    System.out.println("Error while fetching recipe info for ID: "+ ID);
+                    return;
+                }
+                listener.fetchedResponse(response.body(), response.message());
+            }
+
+            @Override
+            public void onFailure(Call<List<GetRecipeInstructionsAPI>> call, Throwable t) {
+                listener.errorMessage(t.getMessage());
+            }
+        });
+    }
+
 }

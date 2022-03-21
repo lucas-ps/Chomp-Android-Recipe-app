@@ -10,8 +10,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
 
     private static final String BASE_URL ="https://api.spoonacular.com/";
-    private static final String API_KEY = "";
+    private static final String API_KEY = "9d9ece2921d24dcf81df192bcabe69f0";
     public static Retrofit retrofit;
+    public static CallApiManager Api = null;
+
 
     public static Retrofit getRetrofitClient() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -37,4 +39,12 @@ public class RetrofitClient {
         }
         return retrofit;
     }
+
+    public static CallApiManager getApi() {
+        if (Api == null) {
+            Api = getRetrofitClient().create(CallApiManager.class);
+        }
+        return Api;
+    }
+
 }
