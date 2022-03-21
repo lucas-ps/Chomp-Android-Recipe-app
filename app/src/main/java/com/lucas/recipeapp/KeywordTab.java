@@ -1,5 +1,6 @@
 package com.lucas.recipeapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lucas.recipeapp.adapters.KeywordRecipeAdapter;
 import com.lucas.recipeapp.adapters.RecipeAdapter;
 import com.lucas.recipeapp.data.ApiRequestManager;
+import com.lucas.recipeapp.listeners.ClickedOnRecipeListener;
 import com.lucas.recipeapp.listeners.KeywordRecipeListener;
 import com.lucas.recipeapp.listeners.RandomRecipeListener;
 import com.lucas.recipeapp.models.KeywordRecipeAPI;
@@ -82,7 +84,7 @@ public class KeywordTab extends Fragment {
             keywordRecyclerView = getView().findViewById(R.id.keywordsRecyclerView);
             keywordRecyclerView.setHasFixedSize(true);
             keywordRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
-            recipeAdapter = new RecipeAdapter(getActivity(), response.recipes);
+            recipeAdapter = new RecipeAdapter(getActivity(), response.recipes, clickedOnRecipeListener);
             keywordRecyclerView.setAdapter(recipeAdapter);
         }
 
@@ -91,4 +93,13 @@ public class KeywordTab extends Fragment {
             Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
         }
     };
+
+    private final ClickedOnRecipeListener clickedOnRecipeListener =  new ClickedOnRecipeListener() {
+        @Override
+        public void onClickRecipe(String ID) {
+//            Toast.makeText(getActivity(), ID, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getActivity(), RecipeDetailPage.class).putExtra("ID", ID));
+        }
+    };
+
 }

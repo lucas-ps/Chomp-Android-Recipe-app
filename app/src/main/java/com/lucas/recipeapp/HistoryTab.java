@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lucas.recipeapp.adapters.RecipeAdapter;
 import com.lucas.recipeapp.data.ApiRequestManager;
+import com.lucas.recipeapp.listeners.ClickedOnRecipeListener;
 import com.lucas.recipeapp.listeners.RandomRecipeListener;
 import com.lucas.recipeapp.models.RandomRecipeAPI;
 
@@ -44,7 +45,7 @@ public class HistoryTab extends Fragment {
             keywordRecyclerView = getView().findViewById(R.id.keywordsRecyclerView);
             keywordRecyclerView.setHasFixedSize(true);
             keywordRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
-            recipeAdapter = new RecipeAdapter(getActivity(), response.recipes);
+            recipeAdapter = new RecipeAdapter(getActivity(), response.recipes, clickedOnRecipeListener);
             keywordRecyclerView.setAdapter(recipeAdapter);
         }
 
@@ -53,4 +54,12 @@ public class HistoryTab extends Fragment {
             Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
         }
     };
+
+    private final ClickedOnRecipeListener clickedOnRecipeListener =  new ClickedOnRecipeListener() {
+        @Override
+        public void onClickRecipe(String ID) {
+
+        }
+    };
+
 }
