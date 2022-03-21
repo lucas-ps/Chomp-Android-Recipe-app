@@ -26,16 +26,5 @@ public class Recipe {
     public String title;
     public int readyInMinutes;
     public int servings;
-    public String sourceUrl;
     public String image;
-    public String imageType;
-    public String summary;
-    public ArrayList<Object> cuisines;
-    public ArrayList<String> dishTypes;
-    public ArrayList<String> diets;
-    public ArrayList<String> occasions;
-    public String instructions;
-    public ArrayList<AnalyzedInstruction> analyzedInstructions;
-    public Object originalId;
-    public String spoonacularSourceUrl;
 }
