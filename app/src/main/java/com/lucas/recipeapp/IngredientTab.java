@@ -13,10 +13,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lucas.recipeapp.adapters.IngredientRecipeAdapter;
 import com.lucas.recipeapp.adapters.RecipeAdapter;
 import com.lucas.recipeapp.data.ApiRequestManager;
+import com.lucas.recipeapp.listeners.ClickedOnRecipeListener;
+import com.lucas.recipeapp.listeners.IngredientRecipeListener;
 import com.lucas.recipeapp.listeners.RandomRecipeListener;
+import com.lucas.recipeapp.models.IngredientRecipeAPI;
 import com.lucas.recipeapp.models.RandomRecipeAPI;
+
+import java.util.List;
 
 public class IngredientTab extends Fragment {
 
@@ -24,6 +30,7 @@ public class IngredientTab extends Fragment {
     RecipeAdapter recipeAdapter;
     SearchView keywordSearchView;
     RecyclerView keywordRecyclerView;
+    IngredientRecipeAdapter ingredientRecipeAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,7 +51,8 @@ public class IngredientTab extends Fragment {
         keywordSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                //manager.getRandomRecipes(randomRecipeListener);
+                String commaSeparatedIngredients = s.replaceAll("\\s*,\\s*", ",");
+                manager.getIngredientRecipes(ingredientRecipeListener, commaSeparatedIngredients);
                 return true;
             }
 
@@ -55,13 +63,13 @@ public class IngredientTab extends Fragment {
         });
     }
 
-    private final RandomRecipeListener randomRecipeListener = new RandomRecipeListener() {
+    private final IngredientRecipeListener ingredientRecipeListener = new IngredientRecipeListener() {
         @Override
-        public void fetchedResponse(RandomRecipeAPI response, String message) {
+        public void fetchedResponse(List<IngredientRecipeAPI> response, String message) {
             keywordRecyclerView = getView().findViewById(R.id.keywordsRecyclerView);
             keywordRecyclerView.setHasFixedSize(true);
             keywordRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
-            recipeAdapter = new RecipeAdapter(getActivity(), response.recipes);
+            ingredientRecipeAdapter = new IngredientRecipeAdapter(getActivity(), response);
             keywordRecyclerView.setAdapter(recipeAdapter);
         }
 
@@ -70,4 +78,28 @@ public class IngredientTab extends Fragment {
             Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
         }
     };
+
+    private final RandomRecipeListener randomRecipeListener = new RandomRecipeListener() {
+        @Override
+        public void fetchedResponse(RandomRecipeAPI response, String message) {
+            keywordRecyclerView = getView().findViewById(R.id.keywordsRecyclerView);
+            keywordRecyclerView.setHasFixedSize(true);
+            keywordRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+            recipeAdapter = new RecipeAdapter(getActivity(), response.recipes, clickedOnRecipeListener);
+            keywordRecyclerView.setAdapter(recipeAdapter);
+        }
+
+        @Override
+        public void errorMessage(String error) {
+            Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private final ClickedOnRecipeListener clickedOnRecipeListener =  new ClickedOnRecipeListener() {
+        @Override
+        public void onClickRecipe(String ID) {
+
+        }
+    };
+
 }
