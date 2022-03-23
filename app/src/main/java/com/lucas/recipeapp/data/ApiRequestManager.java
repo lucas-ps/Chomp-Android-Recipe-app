@@ -2,6 +2,7 @@ package com.lucas.recipeapp.data;
 
 import android.content.Context;
 
+import com.lucas.recipeapp.listeners.InformationBulkListener;
 import com.lucas.recipeapp.listeners.IngredientRecipeListener;
 import com.lucas.recipeapp.listeners.KeywordRecipeListener;
 import com.lucas.recipeapp.listeners.RandomRecipeListener;
@@ -12,6 +13,7 @@ import com.lucas.recipeapp.models.GetRecipeInstructionsAPI;
 import com.lucas.recipeapp.models.IngredientRecipeAPI;
 import com.lucas.recipeapp.models.KeywordRecipeAPI;
 import com.lucas.recipeapp.models.RandomRecipeAPI;
+import com.lucas.recipeapp.models.Result;
 
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class ApiRequestManager {
                     return;
                 }
                 listener.fetchedResponse(response.body(), response.message());
-                System.out.println("Fetched random recipes successfully");
+                //System.out.println("Fetched random recipes successfully");
             }
 
             @Override
@@ -133,4 +135,23 @@ public class ApiRequestManager {
         });
     }
 
+    public void getInformationBulkAPI(InformationBulkListener listener, String IDs){
+        Call<List<Result>> call = api.callinformationBulkAPI(IDs, "false");
+        call.enqueue(new Callback<List<Result>>() {
+            @Override
+            public void onResponse(Call<List<Result>> call, Response<List<Result>> response) {
+                if (!response.isSuccessful()) {
+                    listener.errorMessage(response.message());
+                    System.out.println("Error while fetching recipe info for IDs: "+ IDs);
+                    return;
+                }
+                listener.fetchedResponse(response.body(), response.message());
+            }
+
+            @Override
+            public void onFailure(Call<List<Result>> call, Throwable t) {
+                listener.errorMessage(t.getMessage());
+            }
+        });
+    }
 }

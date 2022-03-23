@@ -36,7 +36,7 @@ public class IngredientRecipeAdapter extends RecyclerView.Adapter<IngredientReci
 
     @Override
     public void onBindViewHolder(@NonNull IngredientRecipeViewHolder holder, int position) {
-        System.out.println(recipeList.get(position).title);
+        //System.out.println(recipeList.get(position).title);
 
         holder.textView_title.setText(recipeList.get(position).title);
         holder.textView_title.setSelected(true);

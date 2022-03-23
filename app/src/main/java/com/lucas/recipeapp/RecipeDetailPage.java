@@ -70,7 +70,7 @@ public class RecipeDetailPage extends AppCompatActivity {
             recyclerview_method.setHasFixedSize(true);
             instructionsAdapter = new InstructionsAdapter(RecipeDetailPage.this, response);
             recyclerview_method.setAdapter(instructionsAdapter);
-            System.out.println("Instructions fetched successfully");
+            //System.out.println("Instructions fetched successfully");
         }
 
         @Override
@@ -84,7 +84,7 @@ public class RecipeDetailPage extends AppCompatActivity {
         public void fetchedResponse(GetRecipeInfoAPI response, String message) {
             textview_recipe_name.setText(response.title);
 
-            System.out.println(response.sourceUrl);
+            //System.out.println(response.sourceUrl);
             textview_link.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

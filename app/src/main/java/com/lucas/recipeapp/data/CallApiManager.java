@@ -5,6 +5,7 @@ import com.lucas.recipeapp.models.GetRecipeInstructionsAPI;
 import com.lucas.recipeapp.models.IngredientRecipeAPI;
 import com.lucas.recipeapp.models.KeywordRecipeAPI;
 import com.lucas.recipeapp.models.RandomRecipeAPI;
+import com.lucas.recipeapp.models.Result;
 
 import java.util.List;
 
@@ -37,8 +38,11 @@ public interface CallApiManager {
 
     @GET("/recipes/{id}/analyzedInstructions")
     Call<List<GetRecipeInstructionsAPI>> callRecipeInstructionsAPI(
-            @Path("id") int ID
-    );
+            @Path("id") int ID);
 
+    @GET("/recipes/informationBulk?includeNutrition=false")
+    Call<List<Result>> callinformationBulkAPI(
+            @Query("ids") String IDs,
+            @Query("includeNutrition") String nutrition);
 }
 

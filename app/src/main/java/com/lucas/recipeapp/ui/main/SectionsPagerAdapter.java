@@ -8,10 +8,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.lucas.recipeapp.R;
-import com.lucas.recipeapp.KeywordTab;
-import com.lucas.recipeapp.IngredientTab;
 import com.lucas.recipeapp.HistoryTab;
+import com.lucas.recipeapp.KeywordTab;
+import com.lucas.recipeapp.R;
 
 
 /**
@@ -21,7 +20,7 @@ import com.lucas.recipeapp.HistoryTab;
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2, R.string.tab_text_3};
+    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
     private final Context mContext;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm) {
@@ -36,8 +35,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return new KeywordTab();
             case 1:
-                return new IngredientTab();
-            case 2:
                 return new HistoryTab();
         }
         return PlaceholderFragment.newInstance(position + 1);
@@ -51,7 +48,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        // Show 3 total pages.
-        return 3;
+        return 2;
     }
 }

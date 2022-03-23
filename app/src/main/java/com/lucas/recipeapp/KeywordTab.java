@@ -1,6 +1,8 @@
 package com.lucas.recipeapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,8 @@ import com.lucas.recipeapp.listeners.RandomRecipeListener;
 import com.lucas.recipeapp.models.KeywordRecipeAPI;
 import com.lucas.recipeapp.models.RandomRecipeAPI;
 
+import java.util.Map;
+
 public class KeywordTab extends Fragment {
 
     ApiRequestManager manager;
@@ -30,6 +34,7 @@ public class KeywordTab extends Fragment {
     KeywordRecipeAdapter keywordRecipeAdapter;
     SearchView keywordSearchView;
     RecyclerView keywordRecyclerView;
+    public static final String SHARED_PREFS = "sharedprefs";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,7 +47,6 @@ public class KeywordTab extends Fragment {
         manager.getRandomRecipes(randomRecipeListener);
 
         setupSearchView();
-        
         return view;
     }
 
@@ -97,9 +101,18 @@ public class KeywordTab extends Fragment {
     private final ClickedOnRecipeListener clickedOnRecipeListener =  new ClickedOnRecipeListener() {
         @Override
         public void onClickRecipe(String ID) {
-//            Toast.makeText(getActivity(), ID, Toast.LENGTH_SHORT).show();
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Map<String, ?> all = sharedPreferences.getAll();
+
+            if (!(sharedPreferences.contains(ID))){
+                editor.remove(ID);
+                editor.commit();
+            }
+
+            editor.putString(ID, String.valueOf(all.size()+1));
+            editor.apply();
             startActivity(new Intent(getActivity(), RecipeDetailPage.class).putExtra("ID", ID));
         }
     };
-
 }

@@ -34,7 +34,7 @@ public class InstructionsAdapter extends RecyclerView.Adapter<InstructionViewHol
 
     @Override
     public void onBindViewHolder(@NonNull InstructionViewHolder holder, int position) {
-        System.out.println("Step created");
+        //System.out.println("Step created");
 
         List<Step> steps= instructions.get(0).steps;
 
@@ -51,7 +51,7 @@ public class InstructionsAdapter extends RecyclerView.Adapter<InstructionViewHol
 
     @Override
     public int getItemCount() {
-        System.out.println(instructions.size());
+        //System.out.println(instructions.size());
         return instructions.get(0).steps.size();
     }
 }

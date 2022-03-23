@@ -40,7 +40,7 @@ public class KeywordRecipeAdapter extends RecyclerView.Adapter<KeywordRecipeView
         holder.textView_title.setText(recipeList.get(position).title);
         holder.textView_title.setSelected(true);
         holder.textView_servings.setText(recipeList.get(position).servings + " people");
-        System.out.println(recipeList.get(position).servings);
+        //System.out.println(recipeList.get(position).servings);
         holder.textView_time.setText(recipeList.get(position).readyInMinutes + " minutes");
         Picasso.get().load(recipeList.get(position).image).into(holder.imageView_recipe);
     }
