@@ -22,6 +22,7 @@ import com.lucas.recipeapp.listeners.ClickedOnRecipeListener;
 import com.lucas.recipeapp.listeners.InformationBulkListener;
 import com.lucas.recipeapp.models.Result;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,7 @@ public class HistoryTab extends Fragment {
     SearchView keywordSearchView;
     RecyclerView keywordRecyclerView;
     public static final String SHARED_PREFS = "sharedprefs";
+    List<Result> recipeList;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,17 +48,69 @@ public class HistoryTab extends Fragment {
             recipes += i+",";
         }
 
-        System.out.println(recipes);
-
         View view = inflater.inflate(R.layout.search_layout, container, false);
 
         keywordRecyclerView = view.findViewById(R.id.keywordsRecyclerView);
         keywordSearchView = view.findViewById(R.id.keywordsSearchView);
 
-        manager = new ApiRequestManager(getActivity());
-        manager.getInformationBulkAPI(informationBulkListener, recipes);
+        if (recipes != "") {
+            manager = new ApiRequestManager(getActivity());
+            manager.getInformationBulkAPI(informationBulkListener, recipes);
+        }
+
+        setupSearchView();
 
         return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+
+        Map<String, ?> all = sharedPreferences.getAll();
+
+        String recipes = "";
+
+        for (String i : all.keySet()) {
+            recipes += i+",";
+        }
+
+        if (recipes != "") {
+            manager = new ApiRequestManager(getActivity());
+            manager.getInformationBulkAPI(informationBulkListener, recipes);
+        }
+    }
+
+    private void setupSearchView() {
+        keywordSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                filter(s.toString());
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filter(s.toString());
+                return true;
+            }
+        });
+    }
+
+    private void filter(String text){
+        if (recipeList != null) {
+
+            ArrayList<Result> filteredList = new ArrayList<>();
+
+            for (Result recipe : recipeList) {
+                if (recipe.title.toLowerCase().contains(text.toLowerCase())) {
+                    filteredList.add(recipe);
+                }
+            }
+            recipeAdapter = new InformationBulkAdapter(getActivity(), filteredList, clickedOnRecipeListener);
+            keywordRecyclerView.setAdapter(recipeAdapter);
+        }
     }
 
     private final InformationBulkListener informationBulkListener = new InformationBulkListener() {
@@ -67,6 +121,8 @@ public class HistoryTab extends Fragment {
             keywordRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
             recipeAdapter = new InformationBulkAdapter(getActivity(), response, clickedOnRecipeListener);
             keywordRecyclerView.setAdapter(recipeAdapter);
+
+            recipeList = new ArrayList<>(response);
         }
 
         @Override
