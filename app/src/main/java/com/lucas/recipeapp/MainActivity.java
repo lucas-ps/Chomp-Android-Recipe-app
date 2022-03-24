@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Method to show the menu that pops up when you click on the floating action button
     private void showPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         MenuInflater inflater = popup.getMenuInflater();
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Method to render the recipe details if a recipe is clicked on
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         // Handle item selection

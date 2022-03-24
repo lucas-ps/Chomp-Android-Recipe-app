@@ -72,7 +72,7 @@ public class KeywordTab extends Fragment {
             keywordRecyclerView = getView().findViewById(R.id.keywordsRecyclerView);
             keywordRecyclerView.setHasFixedSize(true);
             keywordRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
-            keywordRecipeAdapter = new KeywordRecipeAdapter(getActivity(), response.results);
+            keywordRecipeAdapter = new KeywordRecipeAdapter(getActivity(), response.results, clickedOnRecipeListener);
             keywordRecyclerView.setAdapter(keywordRecipeAdapter);
         }
 
