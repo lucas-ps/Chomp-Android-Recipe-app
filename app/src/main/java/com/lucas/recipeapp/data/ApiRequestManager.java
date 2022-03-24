@@ -3,14 +3,12 @@ package com.lucas.recipeapp.data;
 import android.content.Context;
 
 import com.lucas.recipeapp.listeners.InformationBulkListener;
-import com.lucas.recipeapp.listeners.IngredientRecipeListener;
 import com.lucas.recipeapp.listeners.KeywordRecipeListener;
 import com.lucas.recipeapp.listeners.RandomRecipeListener;
 import com.lucas.recipeapp.listeners.RecipeInfoListener;
 import com.lucas.recipeapp.listeners.RecipeInstructionsListener;
 import com.lucas.recipeapp.models.GetRecipeInfoAPI;
 import com.lucas.recipeapp.models.GetRecipeInstructionsAPI;
-import com.lucas.recipeapp.models.IngredientRecipeAPI;
 import com.lucas.recipeapp.models.KeywordRecipeAPI;
 import com.lucas.recipeapp.models.RandomRecipeAPI;
 import com.lucas.recipeapp.models.Result;
@@ -67,28 +65,6 @@ public class ApiRequestManager {
 
             @Override
             public void onFailure(Call<KeywordRecipeAPI> call, Throwable t) {
-                listener.errorMessage(t.getMessage());
-            }
-        });
-    }
-
-    public void getIngredientRecipes(IngredientRecipeListener listener, String ingredients) {
-        Call<List<IngredientRecipeAPI>> call =
-                api.callIngredientRecipeAPI(ingredients, "10", "true");
-        call.enqueue(new Callback<List<IngredientRecipeAPI>>() {
-
-            @Override
-            public void onResponse(Call<List<IngredientRecipeAPI>> call, Response<List<IngredientRecipeAPI>> response) {
-                if (!response.isSuccessful()) {
-                    listener.errorMessage(response.message());
-                    System.out.println("Error while fetching recipes by ingredient");
-                    return;
-                }
-                listener.fetchedResponse(response.body(), response.message());
-            }
-
-            @Override
-            public void onFailure(Call<List<IngredientRecipeAPI>> call, Throwable t) {
                 listener.errorMessage(t.getMessage());
             }
         });
